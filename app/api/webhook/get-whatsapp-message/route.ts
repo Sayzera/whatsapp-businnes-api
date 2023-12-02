@@ -27,6 +27,8 @@ interface WebhookData {
 export async function POST(req: NextRequest) {
     const data = req.body as WebhookData | null;
 
+    console.log(data);
+
     try {
         return NextResponse.json({
            data: data
