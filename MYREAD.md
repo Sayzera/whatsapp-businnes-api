@@ -13,6 +13,11 @@ source ~/.zshrc
 
 npx create-next-app@latest discord-clone --typescript --tailwindcss --eslint
 
+
+npm install prisma --save-dev
+npx prisma
+
+
 npm i next-themes
 npm i -D prisma
 npx prisma init
@@ -86,3 +91,11 @@ https://livekit.io/
 
 ## Railway
 https://railway.app/new
+
+## Zustand
+npm i zustand
+
+
+## uuid
+npm i uuid
+npm i @types/uuid -D

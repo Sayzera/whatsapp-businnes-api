@@ -1,0 +1,24 @@
+{   
+    "app": "DemoApp", 
+    "timestamp": 1580227766370,   
+    "version": 2, 
+    "type": "message",    
+    "payload": {  
+      "id": "ABEGkYaYVSEEAhAL3SLAWwHKeKrt6s3FKB0c",   
+      "source": "918x98xx21x4",   
+      "type": "text"|"image"|"file"|"audio"|"video"|"contact"|"location"|"button_reply"|"list_reply", 
+      "payload": {    
+        // Varies according to the type of payload.    
+      },  
+      "sender": { 
+        "phone": "918x98xx21x4",  
+        "name": "Drew",   
+        "country_code": "91", 
+        "dial_code": "8x98xx21x4" 
+      },  
+      "context": {    
+        "id": "gBEGkYaYVSEEAgnPFrOLcjkFjL8",  
+        "gsId": "9b71295f-f7af-4c1f-b2b4-31b4a4867bad"    
+      }   
+    } 
+  }
