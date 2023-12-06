@@ -39,6 +39,8 @@ interface ApizResultFileStatusData {
 export async function POST(req: NextRequest) {
   const data: WebhookData = await req.json();
 
+  console.log("[Webhook Data]", data)
+
   try {
     const existsUser = await db?.companies?.findFirst({
       where: {
@@ -65,7 +67,7 @@ export async function POST(req: NextRequest) {
       );
     } else {
       const formData = new FormData();
-      const text = data.payload.payload.text;
+      const text = data.payload?.payload?.text;
       formData.append("col_application_number", text);
 
       const responseData: ApizResultFileStatusData = await axios.post(
