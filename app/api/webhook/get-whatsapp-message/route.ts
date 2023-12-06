@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
             phoneNumberList: {
               some: {
                 phoneNumber: {
-                  equals: data.payload.sender.phone,
+                  equals: data?.payload?.sender?.phone,
                 },
               },
             },
