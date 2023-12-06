@@ -1,76 +1,86 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
 
-interface WebhookData { 
-    app: string;
-    timestamp: number;
-    version: number;
+interface WebhookData {
+  app: string;
+  timestamp: number;
+  version: number;
+  type: string;
+  payload: {
+    id: string;
+    source: string;
     type: string;
-    payload: {
-        id: string;
-        source: string;
-        type:string;
-        payload: any;
-        sender: {
-            phone: string;
-            name: string;
-            country_code: string;
-            dial_code: string;
-        };
-        context: {
-            id: string;
-            gsId: string;
-        };
-    }
+    payload: any;
+    sender: {
+      phone: string;
+      name: string;
+      country_code: string;
+      dial_code: string;
+    };
+    context: {
+      id: string;
+      gsId: string;
+    };
+  };
 }
 
+interface ApizResultFileStatusData {
+  col_last_process_status: string;
+  col_trademark: string;
+}
 
 export async function POST(req: NextRequest) {
-    const data: WebhookData = await req.json()
+  const data: WebhookData = await req.json();
 
-    try {
-        const existsUser =  await db?.companies?.findFirst({
-            where: {
-                users: {
-                    some: {
-                        phoneNumberList: {
-                            some: {
-                                phoneNumber: {
-                                    equals: data.payload.sender.phone
-                                }
-                            }
-                        
-                        }
-                    }
-                }
-            }
-        })
+  try {
+    const existsUser = await db?.companies?.findFirst({
+      where: {
+        users: {
+          some: {
+            phoneNumberList: {
+              some: {
+                phoneNumber: {
+                  equals: data.payload.sender.phone,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
 
-        if(!existsUser) {
-            return NextResponse.json({
-                data: `
-                    Merhaba kullanıcı kaydınız bulunmamaktadır. Lütfen kayıt olunuz.
-                    Kayıt olmak için ${
-                        process.env.NEXT_PUBLIC_SITE_URL!
-                    } adresine gidiniz.
-                `
-            },{
-                status: 200
-            })
-        } else {
-            return NextResponse.json({
-                data: `Merhaba ${existsUser.name},
-                Sistemiz üzerinden gelen mesajınız alınmıştır. En kısa sürede size dönüş yapılacaktır.
-                `
-            })
+    if (!existsUser) {
+      return new NextResponse(
+        `Merhaba kullanıcı kaydınız bulunmamaktadır. Lütfen kayıt olunuz. Kayıt olmak için ${process.env.NEXT_PUBLIC_SITE_URL!} adresine gidiniz.`,
+        {
+          status: 200,
         }
+      );
+    } else {
+      const formData = new FormData();
+      const text = data.payload.payload.text;
+      formData.append("col_application_number", text);
 
-    } catch (error) {
-        console.log('[Webhook Error]', error)
-        return new NextResponse("Invalid Request", { status: 400 })
+      const responseData: ApizResultFileStatusData = await axios.post(
+        `${process.env.NEXT_PUBLIC_APIZ_URL}/web/hook/whatsapp/result-file-status`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return new NextResponse(
+        `Merhaba ${existsUser.name},
+                ${responseData.col_trademark} markası için başvuru durumunuz '${responseData.col_last_process_status}' olarak kayıtlıdır. 
+                `,
+        { status: 200 }
+      );
     }
-
-   
-
-    
+  } catch (error) {
+    console.log("[Webhook Error]", error);
+    return new NextResponse("Invalid Request", { status: 400 });
+  }
 }
