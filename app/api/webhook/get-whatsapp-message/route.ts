@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
 
       if(!responseData.data.success) {
         return new NextResponse(
-          `Merhaba ${existsUser.name},${text} numaralı başvuru bulunamadı.  `,
+          `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
           { status: 200 }
         );
       }
