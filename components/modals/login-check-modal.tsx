@@ -120,7 +120,6 @@ export default function LoginCheckModal() {
   };
 
   const isLoading = form.formState.isSubmitting;
-
   if (!isMounted) return null;
 
   return (

@@ -26,8 +26,10 @@ interface WebhookData {
 }
 
 interface ApizResultFileStatusData {
-  col_last_process_status: string;
-  col_trademark: string;
+  data: {
+    col_last_process_status: string;
+    col_trademark: string;
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -74,7 +76,7 @@ export async function POST(req: NextRequest) {
 
       return new NextResponse(
         `Merhaba ${existsUser.name},
-                ${responseData.col_trademark} markası için başvuru durumunuz '${responseData.col_last_process_status}' olarak kayıtlıdır. 
+                ${responseData.data.col_trademark} markası için başvuru durumunuz '${responseData.data.col_last_process_status}' olarak kayıtlıdır. 
                 `,
         { status: 200 }
       );
