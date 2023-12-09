@@ -1,66 +1,24 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { ApizResultFileStatusData, WebhookData } from "@/types/api/webhook/get-whatsapp-message/types";
+import { userCheck } from "@/lib/api/existsUser";
 
-interface WebhookData {
-  app: string;
-  timestamp: number;
-  version: number;
-  type: string;
-  payload: {
-    id: string;
-    source: string;
-    type: string;
-    payload: any;
-    sender: {
-      phone: string;
-      name: string;
-      country_code: string;
-      dial_code: string;
-    };
-    context: {
-      id: string;
-      gsId: string;
-    };
-  };
-}
+import customMessage from '@/temp/custom-message.json';
 
-interface ApizResultFileStatusData {
-  data: {
-    data: {
-        col_last_process_status: string;
-        col_trademark: string;
-    },
-    success: boolean;
 
-  }
-}
 
 export async function POST(req: NextRequest) {
   const data: WebhookData = await req.json();
-
-  console.log("[Webhook Data]", data)
 
   if(data?.payload?.type !== "text") {
     return new NextResponse("Invalid Request", { status: 400 });
   }
 
   try {
-    const existsUser = await db?.companies?.findFirst({
-      where: {
-        users: {
-          some: {
-            phoneNumberList: {
-              some: {
-                phoneNumber: {
-                  equals: data?.payload?.sender?.phone,
-                },
-              },
-            },
-          },
-        },
-      },
-    });
+    // Kullanıcı kayıtlı mı kontrol et
+    const existsUser = await userCheck(db,data?.payload?.sender?.phone)
+  
 
     if (!existsUser) {
       return new NextResponse(
@@ -85,10 +43,11 @@ export async function POST(req: NextRequest) {
       );
 
       if(!responseData.data.success) {
-        return new NextResponse(
-          `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
-          { status: 200 }
-        );
+        return NextResponse.json(customMessage, { status: 200 })
+        // return new NextResponse(
+        //   `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
+        //   { status: 200 }
+        // );
       }
 
       return new NextResponse(

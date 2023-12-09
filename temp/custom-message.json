@@ -1,0 +1,46 @@
+{
+    "type": "list",
+    "title": "title text",
+    "body": "body text",
+    "globalButtons": [
+        {
+            "type": "text",
+            "title": "button text"
+        }
+    ],
+    "items": [
+        {
+            "subtitle": "first Subtitle",
+            "options": [
+                {
+                    "title": "section 1 row 1",
+                    "description": "first row of first section desctiption"
+                },
+                {
+                    "title": "section 1 row 2",
+                    "description": "second row of first section desctiption"
+                }
+            ]
+        },
+        {
+            "title": "second section",
+            "subtitle": "second Subtitle",
+            "options": [
+                {
+                    "title": "section 2 row 1",
+                    "description": "first row of second section desctiption"
+                }
+            ]
+        },
+        {
+            "title": "third Section",
+            "subtitle": "third Subtitle",
+            "options": [
+                {
+                    "title": "section 3 row 1",
+                    "description": "first row of third section desctiption"
+                }
+            ]
+        }
+    ]
+}
