@@ -4,7 +4,7 @@ import axios from "axios";
 import { ApizResultFileStatusData, WebhookData } from "@/types/api/webhook/get-whatsapp-message/types";
 import { userCheck } from "@/lib/api/existsUser";
 
-import customMessage from '@/temp/custom-message.json';
+
 
 
 
@@ -43,11 +43,10 @@ export async function POST(req: NextRequest) {
       );
 
       if(!responseData.data.success) {
-        return NextResponse.json(customMessage, { status: 200 })
-        // return new NextResponse(
-        //   `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
-        //   { status: 200 }
-        // );
+        return new NextResponse(
+          `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
+          { status: 200 }
+        );
       }
 
       return new NextResponse(
