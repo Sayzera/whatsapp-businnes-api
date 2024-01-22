@@ -1,3 +1,4 @@
+const sdk = require("api")("@gupshup/v1.0#1keni1zln44xoxq");
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
@@ -43,17 +44,34 @@ export async function POST(req: NextRequest) {
         }
       );
 
-      if (!responseData.data.success) {
-        return new NextResponse(
-          `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
-          { status: 200 }
-        );
-      }
+      // if (!responseData.data.success) {
+      //   return new NextResponse(
+      //     `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
+      //     { status: 200 }
+      //   );
+      // }
 
-      return new NextResponse(
-        `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
-        { status: 200 }
-      );
+      // return new NextResponse(
+      //   `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
+      //   { status: 200 }
+      // );
+      sdk
+        .sendMessage(
+          {
+            disablePreview: true,
+            channel: "whatsapp",
+            message: "test1234",
+            destination: data.payload.sender.phone,
+            "src.name": "NiltekDev",
+            source: "905370333756",
+          },
+          {
+            accept: "application/x-www-form-urlencoded",
+            apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
+          }
+        )
+        .then(({ data }) => console.log(data))
+        .catch((err) => console.error(err));
     }
   } catch (error) {
     console.log("[Webhook Error]", error);
