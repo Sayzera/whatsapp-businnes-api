@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
       const text = data.payload?.payload?.text;
       formData.append("col_application_number", text);
 
+      console.log(data);
+
       const responseData: ApizResultFileStatusData = await axios.post(
         `${process.env.NEXT_PUBLIC_APIZ_URL}/web/hook/whatsapp/result-file-status`,
         formData,
@@ -40,8 +42,6 @@ export async function POST(req: NextRequest) {
           },
         }
       );
-
-      console.log(responseData);
 
       if (!responseData.data.success) {
         return new NextResponse(
