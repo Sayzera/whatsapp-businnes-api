@@ -70,8 +70,8 @@ export async function POST(req: NextRequest) {
             apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
           }
         )
-        .then((res) => console.log(res.data))
-        .catch((err) => console.error(err));
+        .then((res: any) => console.log(res.data))
+        .catch((err: any) => console.error(err));
     }
   } catch (error) {
     console.log("[Webhook Error]", error);
