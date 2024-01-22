@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
             apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
           }
         )
-        .then(({ data }) => console.log(data))
+        .then((res) => console.log(res.data))
         .catch((err) => console.error(err));
     }
   } catch (error) {
