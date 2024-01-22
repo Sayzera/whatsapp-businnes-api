@@ -41,62 +41,18 @@ export async function POST(req: NextRequest) {
         }
       );
 
-      // if (!responseData.data.success) {
-      //   return new NextResponse(
-      //     `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
-      //     { status: 200 }
-      //   );
-      // }
+      console.log(responseData);
 
-      // return new NextResponse(
-      //   `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
-      //   { status: 200 }
-      // );
+      if (!responseData.data.success) {
+        return new NextResponse(
+          `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
+          { status: 200 }
+        );
+      }
 
-      return NextResponse.json(
-        {
-          interactive: {
-            type: "list",
-            header: {
-              type: "text",
-              text: "your-header-content",
-            },
-            body: {
-              text: "your-text-message-content",
-            },
-            footer: {
-              text: "your-footer-content",
-            },
-            action: {
-              button: "cta-button-content",
-              sections: [
-                {
-                  title: "your-section-title-content",
-                  rows: [
-                    {
-                      id: "unique-row-identifier",
-                      title: "row-title-content",
-                      description: "row-description-content",
-                    },
-                  ],
-                },
-                {
-                  title: "your-section-title-content",
-                  rows: [
-                    {
-                      id: "unique-row-identifier",
-                      title: "row-title-content",
-                      description: "row-description-content",
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-        {
-          status: 200,
-        }
+      return new NextResponse(
+        `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
+        { status: 200 }
       );
     }
   } catch (error) {
