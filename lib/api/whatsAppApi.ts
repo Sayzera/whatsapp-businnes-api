@@ -88,10 +88,6 @@ class WhatsAppApi {
   }
 
   async sendQuickReplyMessage({ destination, msgid }: quickReplyMessageProps) {
-    console.log("sendQuickReplyMessage", {
-      destination,
-      msgid,
-    });
     try {
       await sdk.postMsg(
         {
