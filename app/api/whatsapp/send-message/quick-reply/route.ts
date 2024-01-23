@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
           apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
         }
       )
-      .then(({ data }) => console.log(data))
-      .catch((err) => console.error(err));
+      .then(({ data }: any) => console.log(data))
+      .catch((err: any) => console.error(err));
 
     return new NextResponse("OK", { status: 200 });
   } catch (error: any) {

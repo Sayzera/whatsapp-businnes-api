@@ -43,11 +43,6 @@ export async function POST(req: NextRequest) {
         }
       );
 
-      const apiUrl = "https://api.gupshup.io/sm/api/v1/msg";
-      const headers = {
-        apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
-      };
-
       if (!responseData.data.success) {
         return new NextResponse(
           `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
