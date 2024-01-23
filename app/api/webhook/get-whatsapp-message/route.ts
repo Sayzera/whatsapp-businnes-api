@@ -55,7 +55,6 @@ export async function POST(req: NextRequest) {
         msgid: data.payload.id,
         options: [
           { type: "text", title: "Yurt İçi Markalarım" },
-          { type: "text", title: "Yurt Dışı Markalarım" },
           { type: "text", title: "Patent" },
           { type: "text", title: "Tasarım" },
         ],
