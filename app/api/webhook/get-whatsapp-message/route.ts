@@ -10,6 +10,8 @@ export async function POST(req: NextRequest) {
   const whatsAppApiz = new WhatsAppApizService();
   const data: WebhookData = await req.json();
 
+  console.log("[Webhook Data]", data);
+
   const text = data?.payload?.payload?.text;
   // console.log("[Webhook Data]", data);
 
@@ -37,12 +39,6 @@ export async function POST(req: NextRequest) {
         { status: 200 }
       );
     }
-
-    await whatsAppApi.sendInteractiveMessage({
-      message: {},
-      destination: data.payload.sender.phone,
-      msgid: data.payload.id,
-    });
 
     let sendBasicMessage = await whatsAppApi.sendMessage({
       message: {
