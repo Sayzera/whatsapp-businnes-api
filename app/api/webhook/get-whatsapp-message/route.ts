@@ -42,10 +42,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await whatsAppApi.sendQuickReplyMessage({
-      destination: data.payload.sender.phone,
-      msgid: data.payload.id,
-    });
+    // await whatsAppApi.sendQuickReplyMessage({
+    //   destination: data.payload.sender.phone,
+    //   msgid: data.payload.id,
+    // });
 
     let sendBasicMessage = await whatsAppApi.sendMessage({
       message: {
