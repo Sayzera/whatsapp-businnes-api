@@ -10,8 +10,6 @@ export async function POST(req: NextRequest) {
   const whatsAppApiz = new WhatsAppApizService();
   const data: WebhookData = await req.json();
 
-  console.log("[Webhook Data]", data);
-
   const text = data?.payload?.payload?.text;
   // console.log("[Webhook Data]", data);
 
@@ -22,6 +20,8 @@ export async function POST(req: NextRequest) {
   if (data?.payload?.type !== "text") {
     return new NextResponse("Invalid Request", { status: 400 });
   }
+
+  console.log("[Webhook Data]", data);
 
   try {
     // Kullanıcı kayıtlı mı kontrol et
