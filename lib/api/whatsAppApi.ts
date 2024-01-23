@@ -11,6 +11,11 @@ interface interactiveMessageProps {
   msgid: string;
 }
 
+interface quickReplyMessageProps {
+  destination: number | string;
+  msgid: string;
+}
+
 class WhatsAppApi {
   source: number = 905370333757;
   channel: string = "whatsapp";
@@ -80,6 +85,44 @@ class WhatsAppApi {
         apikey: this.apikey,
       }
     );
+  }
+
+  async sendQuickReplyMessage({ destination, msgid }: quickReplyMessageProps) {
+    try {
+      await sdk.postMsg(
+        {
+          message: JSON.stringify({
+            content: {
+              type: "text",
+              header: "this is the header",
+              text: "this is the body",
+              caption: "this is the footer",
+            },
+            type: "quick_reply",
+            msgid: msgid,
+            options: [
+              { type: "text", title: "deneme12323" },
+              { type: "text", title: "First" },
+            ],
+          }),
+          encode: true,
+          disablePreview: true,
+          "src.name": "NiltekDev",
+          channel: "whatsapp",
+          source: this.source,
+          destination: destination,
+        },
+        {
+          apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
+        }
+      );
+    } catch (error: any) {
+      console.log("[ERROR] WhatsAppApi.sendQuickReplyMessage()", error);
+      return {
+        success: false,
+        message: "Message could not be sent",
+      };
+    }
   }
 }
 

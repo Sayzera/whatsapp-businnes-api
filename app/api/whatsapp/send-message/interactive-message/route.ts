@@ -8,8 +8,17 @@ export async function POST(req: NextRequest) {
     sdk
       .postMsg(
         {
-          message:
-            '{"type":"list","title":"title text","body":"body text","msgid":"ABEGkFQkM2OWAhD-8YT6BCZNaIe8wgNSj_mk","globalButtons":[{"type":"text","title":"Kabul Et"},{"type":"text","title":"Global button"}],"items":[{"title":"first Section","subtitle":"first Subtitle"}]}',
+          message: JSON.stringify({
+            type: "list",
+            title: "title text",
+            body: "body text",
+            msgid: "ABEGkFQkM2OWAhD-8YT6BCZNaIe8wgNSj_mk",
+            globalButtons: [
+              { type: "text", title: "Kabul Et" },
+              { type: "text", title: "Global button" },
+            ],
+            items: [{ title: "first Section", subtitle: "first Subtitle" }],
+          }),
           encode: true,
           disablePreview: true,
           "src.name": "NiltekDev",
