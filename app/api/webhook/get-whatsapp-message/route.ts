@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   // console.log("[Webhook Data]", data);
   console.log("[Webhook Data]", data);
   if (data.type !== "message") {
-    return;
+    return new NextResponse("Invalid Request", { status: 400 });
   }
 
   if (data?.payload?.type !== "text") {
