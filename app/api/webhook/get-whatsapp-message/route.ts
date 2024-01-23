@@ -42,18 +42,33 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // await whatsAppApi.sendQuickReplyMessage({
-    //   destination: data.payload.sender.phone,
-    //   msgid: data.payload.id,
-    // });
-
-    let sendBasicMessage = await whatsAppApi.sendMessage({
-      message: {
-        type: "text",
-        text: `Merhaba ${existsUser.name}, *${responseData.data.data.col_trademark}* markası için başvuru durumunuz '*${responseData.data.data.col_last_process_status}*' olarak kayıtlıdır.`,
-      },
+    await whatsAppApi.sendQuickReplyMessage({
       destination: data.payload.sender.phone,
+      message: {
+        content: {
+          type: "text",
+          header: "Apiz - İşlemler",
+          text: "Aşağıdaki işlemlerden birini seçiniz. ",
+          caption: "Ankara Patent - Apiz",
+        },
+        type: "quick_reply",
+        msgid: data.payload.id,
+        options: [
+          { type: "text", title: "Yurt İçi Markalarım" },
+          { type: "text", title: "Yurt Dışı Markalarım" },
+          { type: "text", title: "Patent" },
+          { type: "text", title: "Tasarım" },
+        ],
+      },
     });
+
+    // let sendBasicMessage = await whatsAppApi.sendMessage({
+    //   message: {
+    //     type: "text",
+    //     text: `Merhaba ${existsUser.name}, *${responseData.data.data.col_trademark}* markası için başvuru durumunuz '*${responseData.data.data.col_last_process_status}*' olarak kayıtlıdır.`,
+    //   },
+    //   destination: data.payload.sender.phone,
+    // });
 
     return new NextResponse("OK", { status: 400 });
   } catch (error) {

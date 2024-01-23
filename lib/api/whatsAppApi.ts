@@ -13,7 +13,7 @@ interface interactiveMessageProps {
 
 interface quickReplyMessageProps {
   destination: number | string;
-  msgid: string;
+  message: Record<string, unknown>;
 }
 
 class WhatsAppApi {
@@ -87,24 +87,14 @@ class WhatsAppApi {
     );
   }
 
-  async sendQuickReplyMessage({ destination, msgid }: quickReplyMessageProps) {
+  async sendQuickReplyMessage({
+    destination,
+    message,
+  }: quickReplyMessageProps) {
     try {
       await sdk.postMsg(
         {
-          message: JSON.stringify({
-            content: {
-              type: "text",
-              header: "this is the header",
-              text: "this is the body",
-              caption: "this is the footer",
-            },
-            type: "quick_reply",
-            msgid: msgid,
-            options: [
-              { type: "text", title: "deneme12323" },
-              { type: "text", title: "First" },
-            ],
-          }),
+          message: JSON.stringify(message),
           encode: true,
           disablePreview: true,
           "src.name": "NiltekDev",
