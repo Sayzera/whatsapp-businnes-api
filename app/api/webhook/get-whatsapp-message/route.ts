@@ -10,6 +10,8 @@ import { userCheck } from "@/lib/api/existsUser";
 export async function POST(req: NextRequest) {
   const data: WebhookData = await req.json();
 
+  console.log("[Webhook Data]", data);
+
   if (data?.payload?.type !== "text") {
     return new NextResponse("Invalid Request", { status: 400 });
   }
@@ -31,8 +33,6 @@ export async function POST(req: NextRequest) {
       const text = data.payload?.payload?.text;
       formData.append("col_application_number", text);
 
-      console.log(data);
-
       const responseData: ApizResultFileStatusData = await axios.post(
         `${process.env.NEXT_PUBLIC_APIZ_URL}/web/hook/whatsapp/result-file-status`,
         formData,
@@ -48,17 +48,17 @@ export async function POST(req: NextRequest) {
         apikey: "y0fwulucncdyfuuqgurfznibf8necwkd",
       };
 
-      // if (!responseData.data.success) {
-      //   return new NextResponse(
-      //     `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
-      //     { status: 200 }
-      //   );
-      // }
+      if (!responseData.data.success) {
+        return new NextResponse(
+          `Merhaba ${existsUser.name}, '${text}' numaralı başvuru bulunamadı.  `,
+          { status: 200 }
+        );
+      }
 
-      // return new NextResponse(
-      //   `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
-      //   { status: 200 }
-      // );
+      return new NextResponse(
+        `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
+        { status: 200 }
+      );
     }
   } catch (error) {
     console.log("[Webhook Error]", error);
