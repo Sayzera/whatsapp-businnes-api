@@ -1,10 +1,6 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-import {
-  ApizResultFileStatusData,
-  WebhookData,
-} from "@/types/api/webhook/get-whatsapp-message/types";
+import { WebhookData } from "@/types/api/webhook/get-whatsapp-message/types";
 import { userCheck } from "@/lib/api/existsUser";
 import { WhatsAppApi } from "@/lib/api/whatsApp";
 import { WhatsAppApizService } from "@/lib/api/whatsappApizService";
@@ -13,6 +9,8 @@ export async function POST(req: NextRequest) {
   const whatsAppApi = new WhatsAppApi();
   const whatsAppApiz = new WhatsAppApizService();
   const data: WebhookData = await req.json();
+
+  const text = data?.payload?.payload?.text;
   // console.log("[Webhook Data]", data);
 
   if (data?.payload?.type !== "text") {
@@ -43,7 +41,7 @@ export async function POST(req: NextRequest) {
     let sendBasicMessage = await whatsAppApi.sendMessage({
       message: {
         type: "text",
-        text: `Merhaba ${existsUser.name}, ${responseData.data.data.col_trademark} markası için başvuru durumunuz '${responseData.data.data.col_last_process_status}' olarak kayıtlıdır.`,
+        text: `Merhaba ${existsUser.name}, *${responseData.data.data.col_trademark}* markası için başvuru durumunuz '*${responseData.data.data.col_last_process_status}*' olarak kayıtlıdır.`,
       },
       destination: data.payload.sender.phone,
     });

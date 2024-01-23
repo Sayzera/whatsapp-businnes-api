@@ -15,7 +15,6 @@ class WhatsAppApizService {
     };
   }> {
     const formData = new FormData();
-    const text = data?.payload?.payload?.text;
 
     formData.append("col_application_number", text);
 
