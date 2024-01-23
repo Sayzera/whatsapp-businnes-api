@@ -42,18 +42,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // await whatsAppApi.sendQuickReplyMessage({
-    //   destination: data.payload.sender.phone,
-    //   msgid: data.payload.id,
-    // });
-
-    let sendBasicMessage = await whatsAppApi.sendMessage({
-      message: {
-        type: "text",
-        text: `Merhaba ${existsUser.name}, *${responseData.data.data.col_trademark}* markası için başvuru durumunuz '*${responseData.data.data.col_last_process_status}*' olarak kayıtlıdır.`,
-      },
+    await whatsAppApi.sendQuickReplyMessage({
       destination: data.payload.sender.phone,
+      msgid: data.payload.id,
     });
+
+    return new NextResponse("OK", { status: 400 });
+
+    // let sendBasicMessage = await whatsAppApi.sendMessage({
+    //   message: {
+    //     type: "text",
+    //     text: `Merhaba ${existsUser.name}, *${responseData.data.data.col_trademark}* markası için başvuru durumunuz '*${responseData.data.data.col_last_process_status}*' olarak kayıtlıdır.`,
+    //   },
+    //   destination: data.payload.sender.phone,
+    // });
   } catch (error) {
     console.log("[Webhook Error]", error);
     return new NextResponse("Invalid Request", { status: 400 });
