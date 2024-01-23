@@ -36,6 +36,8 @@ model Users {
 
   questions Questions[]
   phoneNumberList PhoneNumberList[]
+  userActions UserActions[]
+  steps UserActionSteps[]
 
   companyId String  
   company Companies @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -68,6 +70,59 @@ enum QuestionType {
 
 enum AnswerType {
   TEXT
+}
+
+// İşlemler
+enum Actions {
+  YURT_ICI_DOSYA_TAKIBI
+  YURT_DISI_DOSYA_TAKIBI
+  PATENT
+  TASARIM
+}
+// İşlem Tipleri
+enum ActionTypes {
+  BASVURU_DOSYASI
+  MARKA_ITIRAZ
+}
+
+model UserActions {
+    id String @id @default(uuid())
+    step Int @default(0)
+    status Boolean @default(false)
+    deleted Boolean @default(false)
+    action Actions
+    actionType ActionTypes
+
+    steps UserActionSteps[]
+
+    userId String @default("")
+    User Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+     
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId], name: "userId")
+
+}
+
+model UserActionSteps {
+  id String @id @default(uuid())
+  step Int @default(0)
+  status Boolean @default(false)
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @default("")
+  User Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  stepId String @default("")
+  UserActions UserActions @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  @@index([userId], name: "userId")
+  @@index([stepId], name: "stepId")
+
 }
 
 model Questions {

@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { WebhookData } from "@/types/api/webhook/get-whatsapp-message/types";
 import { userCheck } from "@/lib/api/existsUser";
-import { WhatsAppApi } from "@/lib/api/whatsApp";
+import { WhatsAppApi } from "@/lib/api/whatsAppApi";
 import { WhatsAppApizService } from "@/lib/api/whatsappApizService";
 
 export async function POST(req: NextRequest) {
@@ -37,6 +37,12 @@ export async function POST(req: NextRequest) {
         { status: 200 }
       );
     }
+
+    await whatsAppApi.sendInteractiveMessage({
+      message: {},
+      destination: data.payload.sender.phone,
+      msgid: data.payload.id,
+    });
 
     let sendBasicMessage = await whatsAppApi.sendMessage({
       message: {

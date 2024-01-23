@@ -1,6 +1,14 @@
+const sdk = require("api")("@gupshup/v1.0#ezpvi10lcyl9hs6");
+
 interface sendMessageProps {
   message: Record<string, unknown>;
   destination: number | string;
+}
+
+interface interactiveMessageProps {
+  message: Record<string, unknown>;
+  destination: number | string;
+  msgid: string;
 }
 
 class WhatsAppApi {
@@ -11,7 +19,6 @@ class WhatsAppApi {
   constructor() {}
 
   async sendMessage({ message, destination }: sendMessageProps) {
-    const sdk = require("api")("@gupshup/v1.0#ezpvi10lcyl9hs6");
     try {
       sdk
         .postMsg(
@@ -42,6 +49,37 @@ class WhatsAppApi {
         message: "Message could not be sent",
       };
     }
+  }
+
+  async sendInteractiveMessage({
+    message,
+    destination,
+    msgid,
+  }: interactiveMessageProps) {
+    sdk.postMsg(
+      {
+        message: JSON.stringify({
+          type: "list",
+          title: "title text",
+          body: "body text",
+          msgid: msgid,
+          globalButtons: [
+            { type: "text", title: "Kabul Et" },
+            { type: "text", title: "Global button" },
+          ],
+          items: [{ title: "first Section", subtitle: "first Subtitle" }],
+        }),
+        encode: true,
+        disablePreview: true,
+        "src.name": this.srcName,
+        channel: this.channel,
+        source: this.source,
+        destination: destination,
+      },
+      {
+        apikey: this.apikey,
+      }
+    );
   }
 }
 
