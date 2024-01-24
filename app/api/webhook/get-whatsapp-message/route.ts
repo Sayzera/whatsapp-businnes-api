@@ -13,11 +13,11 @@ export async function POST(req: NextRequest) {
   const text = data?.payload?.payload?.text;
   console.log("[Webhook no filter Data]", data);
   if (data.type !== "message") {
-    return new NextResponse("Invalid Request", { status: 400 });
+    return new NextResponse(null, { status: 200 });
   }
 
-  if (data?.payload?.type !== "text") {
-    return new NextResponse("Invalid Request", { status: 400 });
+  if (data?.payload?.type !== "text" || !data?.payload.payload.reply) {
+    return new NextResponse(null, { status: 200 });
   }
 
   console.log("[Webhook Data filter ]", data);
