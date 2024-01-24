@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const data: WebhookData = await req.json();
 
   const text = data?.payload?.payload?.text;
-  // console.log("[Webhook Data]", data);
+  console.log("[Webhook no filter Data]", data);
   if (data.type !== "message") {
     return new NextResponse("Invalid Request", { status: 400 });
   }
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Invalid Request", { status: 400 });
   }
 
-  console.log("[Webhook Data]", data);
+  console.log("[Webhook Data filter ]", data);
 
   try {
     // Kullanıcı kayıtlı mı kontrol et
