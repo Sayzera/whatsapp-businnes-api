@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(null, { status: 200 });
   }
 
-  if (data?.payload?.type !== "text" || !data?.payload?.payload?.reply) {
+  if (data?.payload?.type !== "text" && !data?.payload?.payload?.reply) {
     return new NextResponse(null, { status: 200 });
   }
 
