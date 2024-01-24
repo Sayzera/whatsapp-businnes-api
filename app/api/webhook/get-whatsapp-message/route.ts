@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
 
   const text = data?.payload?.payload?.text;
   // console.log("[Webhook Data]", data);
-  console.log("[Webhook Data]", data);
   if (data.type !== "message") {
     return new NextResponse("Invalid Request", { status: 400 });
   }
@@ -20,6 +19,8 @@ export async function POST(req: NextRequest) {
   if (data?.payload?.type !== "text") {
     return new NextResponse("Invalid Request", { status: 400 });
   }
+
+  console.log("[Webhook Data]", data);
 
   try {
     // Kullanıcı kayıtlı mı kontrol et
@@ -42,29 +43,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (
-      data?.type === "message" &&
-      data.payload.payload.type === "button_reply"
-    ) {
-      await whatsAppApi.sendQuickReplyMessage({
-        destination: data.payload.sender.phone,
-        message: {
-          content: {
-            type: "text",
-            header: "Apiz - İşlemler",
-            text: "Aşağıdaki işlemlerden birini seçiniz. ",
-            caption: "Ankara Patent - Apiz",
-          },
-          type: "quick_reply",
-          msgid: data.payload.id,
-          options: [
-            { type: "text", title: "Yurt İçi Markalarım" },
-            { type: "text", title: "Patent" },
-            { type: "text", title: "Tasarım" },
-          ],
+    await whatsAppApi.sendQuickReplyMessage({
+      destination: data.payload.sender.phone,
+      message: {
+        content: {
+          type: "text",
+          header: "Apiz - İşlemler",
+          text: "Aşağıdaki işlemlerden birini seçiniz. ",
+          caption: "Ankara Patent - Apiz",
         },
-      });
-    }
+        type: "quick_reply",
+        msgid: data.payload.id,
+        options: [
+          { type: "text", title: "Yurt İçi Markalarım" },
+          { type: "text", title: "Patent" },
+          { type: "text", title: "Tasarım" },
+        ],
+      },
+    });
 
     // let sendBasicMessage = await whatsAppApi.sendMessage({
     //   message: {
@@ -74,7 +70,7 @@ export async function POST(req: NextRequest) {
     //   destination: data.payload.sender.phone,
     // });
 
-    return new NextResponse("OK", { status: 400 });
+    return new NextResponse(null, { status: 200 });
   } catch (error) {
     console.log("[Webhook Error]", error);
     return new NextResponse("Invalid Request", { status: 400 });
