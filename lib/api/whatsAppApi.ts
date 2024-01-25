@@ -1,7 +1,7 @@
 const sdk = require("api")("@gupshup/v1.0#ezpvi10lcyl9hs6");
 
 interface sendMessageProps {
-  message: Record<string, unknown>;
+  message: Record<string, unknown> | string;
   destination: number | string;
 }
 
@@ -31,7 +31,7 @@ class WhatsAppApi {
             channel: this.channel,
             source: this.source,
             destination: destination,
-            message: JSON.stringify(message),
+            message: message,
             "src.name": this.srcName,
             disablePreview: false,
             encode: false,
@@ -64,15 +64,44 @@ class WhatsAppApi {
     sdk.postMsg(
       {
         message: JSON.stringify({
-          type: "list",
-          title: "title text",
-          body: "body text",
-          msgid: msgid,
-          globalButtons: [
-            { type: "text", title: "Kabul Et" },
-            { type: "text", title: "Global button" },
-          ],
-          items: [{ title: "first Section", subtitle: "first Subtitle" }],
+          interactive: {
+            type: "list",
+            header: {
+              type: "text",
+              text: "your-header-content",
+            },
+            body: {
+              text: "your-text-message-content",
+            },
+            footer: {
+              text: "your-footer-content",
+            },
+            action: {
+              button: "cta-button-content",
+              sections: [
+                {
+                  title: "your-section-title-content",
+                  rows: [
+                    {
+                      id: "unique-row-identifier",
+                      title: "row-title-content",
+                      description: "row-description-content",
+                    },
+                  ],
+                },
+                {
+                  title: "your-section-title-content",
+                  rows: [
+                    {
+                      id: "unique-row-identifier",
+                      title: "row-title-content",
+                      description: "row-description-content",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
         }),
         encode: true,
         disablePreview: true,

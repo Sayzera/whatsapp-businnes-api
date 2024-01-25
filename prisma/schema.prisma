@@ -38,6 +38,7 @@ model Users {
   phoneNumberList PhoneNumberList[]
   userActions UserActions[]
   steps UserActionSteps[]
+  welcomeMessagesAction WelcomeMessagesAction[]
 
   companyId String  
   company Companies @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -74,15 +75,24 @@ enum AnswerType {
 
 // İşlemler
 enum Actions {
-  YURT_ICI_DOSYA_TAKIBI
-  YURT_DISI_DOSYA_TAKIBI
-  PATENT
-  TASARIM
+  YURT_ICI_MARKA_DURUMU
+  YURT_ICI_MARKA_ITIRAZ
+  YURT_DISI_MARKA_DURUMU
+  YURT_DISI_MARKA_ITIRAZ
 }
-// İşlem Tipleri
-enum ActionTypes {
-  BASVURU_DOSYASI
-  MARKA_ITIRAZ
+
+// karşılama mesajı tablosu ingilizcesi = 
+
+model WelcomeMessagesAction {
+  id String @id @default(uuid())
+  status Boolean @default(false)
+  deleted Boolean @default(false)
+  phoneNumber String @default("")
+  
+  userId String @default("")
+  User Users @relation(fields: [userId], references: [id], onDelete: Cascade)  
+
+  @@index([userId], name: "userId")
 }
 
 model UserActions {
@@ -91,18 +101,18 @@ model UserActions {
     status Boolean @default(false)
     deleted Boolean @default(false)
     action Actions
-    actionType ActionTypes
 
     steps UserActionSteps[]
 
     userId String @default("")
+    phoneNumber String @default("")
     User Users @relation(fields: [userId], references: [id], onDelete: Cascade)
      
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([userId], name: "userId")
-
+    @@index([phoneNumber], name: "phoneNumber")
 }
 
 model UserActionSteps {
@@ -110,6 +120,8 @@ model UserActionSteps {
   step Int @default(0)
   status Boolean @default(false)
   deleted Boolean @default(false)
+
+  answer String @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
