@@ -73,5 +73,5 @@ export async function POST(req: NextRequest) {
 
   // cevapla buraya örnek dosya numarası geliyor
   const answerMessage = await dbService._answerMessage(data);
-  return NextResponse.json(answerMessage);
+  return new NextResponse(null, { status: 200 });
 }

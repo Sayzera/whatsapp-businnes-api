@@ -1,5 +1,6 @@
 import axios from "axios";
 import { WhatsAppApi } from "./whatsAppApi";
+import { questionsFN } from "@/data/whatsapp-api/api-questions";
 type apizDataType = {
   data: {
     message: string;
@@ -47,10 +48,17 @@ class WhatsappActions {
 
     if (data.success == false) {
       let tempWhassAppMessage: string = `Girilen dosya numarası bulunamadı. Lütfen tekrar deneyiniz. \n`;
-      this.whatsappApi.sendMessage({
+      await this.whatsappApi.sendMessage({
         message: tempWhassAppMessage,
         destination: destination,
       });
+
+      setTimeout(() => {
+        this.whatsappApi.sendMessage({
+          message: questionsFN(),
+          destination: destination,
+        });
+      }, 5000);
       return {
         success: false,
         message: "Girilen dosya numarası bulunamadı. Lütfen tekrar deneyiniz.",

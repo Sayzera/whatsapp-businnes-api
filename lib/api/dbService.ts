@@ -352,6 +352,14 @@ class DBService {
         };
       }
 
+      // delete user welcome
+
+      await db.welcomeMessagesAction.deleteMany({
+        where: {
+          phoneNumber: destination,
+        },
+      });
+
       const userAction = await db.userActions.update({
         where: {
           id: userActionData.id,
