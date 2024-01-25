@@ -13,6 +13,16 @@ import {
 import { DBService } from "@/lib/api/dbService";
 
 export async function POST(req: NextRequest) {
+  await db.welcomeMessagesAction.deleteMany({});
+
+  return NextResponse.json({
+    status: 200,
+    body: {
+      message: "OK",
+    },
+  });
+
+  return;
   const whatsAppApi = new WhatsAppApi();
   const whatsAppApiz = new WhatsAppApizService();
   const data: WebhookData = await req.json();
