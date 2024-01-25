@@ -53,17 +53,12 @@ class WhatsappActions {
         destination: destination,
       });
 
-      setTimeout(() => {
-        this.whatsappApi.sendMessage({
-          message: questionsFN(),
-          destination: destination,
-        });
-      }, 5000);
       return {
         success: false,
         message: "Girilen dosya numarası bulunamadı. Lütfen tekrar deneyiniz.",
       };
     }
+    0;
 
     let tempWhassAppMessage: string = `*${data.data.col_trademark}* marka bilgileri  \n`;
     tempWhassAppMessage += `\n`;
@@ -80,6 +75,17 @@ class WhatsappActions {
       success: true,
       message: "Message sent successfully",
     };
+  }
+
+  async YAPIM_ASAMASINDA(destination: string) {
+    let tempWhassAppMessage: string = `*Marka bilgileri*  \n`;
+    tempWhassAppMessage += `\n`;
+
+    tempWhassAppMessage += `Bu özellik henüz aktif değildir. \n`;
+    await this.whatsappApi.sendMessage({
+      message: tempWhassAppMessage,
+      destination: destination,
+    });
   }
 }
 

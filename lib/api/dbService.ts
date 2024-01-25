@@ -99,6 +99,7 @@ class DBService {
         const userAction = await db.userActions.update({
           where: {
             id: existsUserAction.id,
+            status: true,
           },
           data: {
             steps: {
@@ -314,6 +315,21 @@ class DBService {
         }
 
         return response;
+      }
+
+      if (userActionData.action === "YURT_ICI_MARKA_ITIRAZ") {
+        await whatsAppActions.YAPIM_ASAMASINDA(destination);
+        await this._clearUserAction(destination);
+      }
+
+      if (userActionData.action === "YURT_DISI_MARKA_DURUMU") {
+        await whatsAppActions.YAPIM_ASAMASINDA(destination);
+        await this._clearUserAction(destination);
+      }
+
+      if (userActionData.action === "YURT_DISI_MARKA_ITIRAZ") {
+        await whatsAppActions.YAPIM_ASAMASINDA(destination);
+        await this._clearUserAction(destination);
       }
 
       return {
