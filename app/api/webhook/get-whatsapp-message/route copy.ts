@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { WebhookData } from "@/types/api/webhook/get-whatsapp-message/types";
 import { userCheck } from "@/lib/api/existsUser";
 import { WhatsAppApi } from "@/lib/api/whatsAppApi";
-import { WhatsAppApizService } from "@/lib/api/whatsappApizService";
 import {
   answerQuestion,
   ifNotExistsQuestion,
@@ -14,7 +13,6 @@ import { DBService } from "@/lib/api/dbService";
 
 export async function POST(req: NextRequest) {
   const whatsAppApi = new WhatsAppApi();
-  const whatsAppApiz = new WhatsAppApizService();
   const data: WebhookData = await req.json();
   const dbService = new DBService();
 
@@ -71,7 +69,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(null, { status: 200 });
   }
 
-  // cevapla buraya örnek dosya numarası geliyor
+  // cevapla buraya örnek Başvuru Numarası geliyor
   const answerMessage = await dbService._answerMessage(data);
   return NextResponse.json(answerMessage);
 }

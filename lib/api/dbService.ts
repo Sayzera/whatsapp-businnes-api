@@ -158,6 +158,7 @@ class DBService {
       };
     }
   }
+
   async _findUserAction(data: WebhookData): Promise<findUserAction> {
     const destination = data?.payload?.sender?.phone;
 
@@ -208,6 +209,7 @@ class DBService {
       };
     }
   }
+
   // Kullanıcıyı bir kez karşılamak için
   async _welcomeMessage(data: WebhookData) {
     try {
@@ -243,6 +245,7 @@ class DBService {
       };
     } catch (error) {}
   }
+
   async _existsWelcomeMessage(data: WebhookData) {
     try {
       const destination = data?.payload?.sender?.phone;
@@ -318,17 +321,33 @@ class DBService {
       }
 
       if (userActionData.action === "YURT_ICI_MARKA_ITIRAZ") {
-        await whatsAppActions.YAPIM_ASAMASINDA(destination);
+        let response = await whatsAppActions.YURT_ICI_MARKA_ITIRAZ(
+          text,
+          destination
+        );
+
         await this._clearUserAction(destination);
       }
 
       if (userActionData.action === "YURT_DISI_MARKA_DURUMU") {
-        await whatsAppActions.YAPIM_ASAMASINDA(destination);
-        await this._clearUserAction(destination);
+        let response = await whatsAppActions.YURT_DISI_MARKA_DURUMU(
+          text,
+          destination
+        );
+
+        if (response.success === true) {
+          await this._clearUserAction(destination);
+        }
+
+        return response;
       }
 
       if (userActionData.action === "YURT_DISI_MARKA_ITIRAZ") {
-        await whatsAppActions.YAPIM_ASAMASINDA(destination);
+        let response = await whatsAppActions.YURT_DISI_MARKA_ITIRAZ(
+          text,
+          destination
+        );
+
         await this._clearUserAction(destination);
       }
 
