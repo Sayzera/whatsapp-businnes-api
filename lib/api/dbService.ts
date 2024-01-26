@@ -326,7 +326,9 @@ class DBService {
           destination
         );
 
-        await this._clearUserAction(destination);
+        if (response.success === true) {
+          await this._clearUserAction(destination);
+        }
       }
 
       if (userActionData.action === "YURT_DISI_MARKA_DURUMU") {
@@ -348,7 +350,9 @@ class DBService {
           destination
         );
 
-        await this._clearUserAction(destination);
+        if (response.success === true) {
+          await this._clearUserAction(destination);
+        }
       }
 
       return {
