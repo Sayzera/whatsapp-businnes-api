@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
   const data: WebhookData = await req.json();
   const dbService = new DBService();
 
+  if (!data?.payload?.payload?.text) {
+    return new NextResponse(null, { status: 200 });
+  }
+
   const existsUser = await userCheck(db, data?.payload?.sender?.phone);
   const destination = data?.payload?.sender?.phone;
 
